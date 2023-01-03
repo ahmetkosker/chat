@@ -53,7 +53,8 @@ app.get("/yah", (req, res) => {
   console.log("12e3wawd");
   res.send("yah");
 });
+const PORT = process.env.PORT || 3000;
 
-server.listen(3000, () => {
-  console.log("server is running");
+server.listen(PORT, () => {
+  console.log(`server is running ${PORT}`);
 });
