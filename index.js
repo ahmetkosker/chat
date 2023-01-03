@@ -1,13 +1,13 @@
 const express = require("express");
 var cors = require("cors");
-const http = require("http");
+const https = require("https");
 
 const app = express();
 const { Server } = require("socket.io");
 
 app.use(cors());
 
-const server = http.createServer(app);
+const server = https.createServer(app);
 
 const io = new Server(server, {
   cors: {
@@ -46,7 +46,7 @@ io.on("connection", (socket) => {
 
 app.get("/", (req, res) => {
   console.log("12e3wawd");
-  res.send("test");
+  res.send("45456456");
 });
 
 app.get("/yah", (req, res) => {
