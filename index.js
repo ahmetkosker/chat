@@ -50,13 +50,7 @@ io.on("connection", (socket) => {
 });
 
 app.get("/", (req, res) => {
-  console.log("12e3wawd");
-  res.send("test");
-});
-
-app.get("/yah", (req, res) => {
-  console.log("12e3wawd");
-  res.send("yah");
+  res.send("Welcome to the chat server");
 });
 
 server.listen(3002, () => {
