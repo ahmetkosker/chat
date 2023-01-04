@@ -1,13 +1,12 @@
 const express = require("express");
 var cors = require("cors");
-const https = require("http");
-
+const http = require("http");
 const app = express();
 const { Server } = require("socket.io");
 
 app.use(cors());
 
-const server = https.createServer(app);
+const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
@@ -17,21 +16,27 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
+  console.log(`${socket.id} connected`);
   socket.on("new-user", (data) => {
-    console.log(data);
-    socket.join(data);
+    socket.userName = data.name;
+    console.log(`${socket.userName} joined ${data.room}`);
+    socket.join(data.room);
   });
 
   socket.on("send-chat-message", (data) => {
-    console.log(data.room);
+    data.name = socket.userName;
+    console.log(`${socket.userName} sent ${data.message} to ${data.room}`);
     socket.to(data.room).emit("chat-message", data);
   });
 
   socket.on("leave_room", (data) => {
+    console.log(`${socket.userName} left ${data.room}`);
     socket.leave(data);
+    socket.to(data.room).emit("left-message", data);
   });
 
   socket.on("disconnect", () => {
+    console.log(socket.rooms);
     console.log(`${socket.id} disconnected`);
   });
 
@@ -46,15 +51,14 @@ io.on("connection", (socket) => {
 
 app.get("/", (req, res) => {
   console.log("12e3wawd");
-  res.send("45456456");
+  res.send("test");
 });
 
 app.get("/yah", (req, res) => {
   console.log("12e3wawd");
   res.send("yah");
 });
-const PORT = process.env.PORT || 3000;
 
-server.listen(PORT, () => {
-  console.log(`server is running ${PORT}`);
+server.listen(3002, () => {
+  console.log("server is running");
 });
